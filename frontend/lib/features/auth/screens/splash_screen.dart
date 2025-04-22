@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../config/routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../cubit/auth_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -24,11 +26,13 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Navigate to login screen after delay
+    // Check authentication status and navigate accordingly after splash animation
     Future.delayed(const Duration(seconds: 3), () {
-      // Check here if user is already authenticated
-      // For now, we'll just navigate to login
-      Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+      final authCubit = context.read<AuthCubit>();
+      authCubit.checkAuthStatus();
+
+      // Navigation will be handled by the global BlocListener in app.dart
+      // based on the AuthState emitted by checkAuthStatus()
     });
   }
 

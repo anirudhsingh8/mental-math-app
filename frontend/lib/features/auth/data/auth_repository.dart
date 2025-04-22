@@ -1,31 +1,19 @@
 import 'package:mental_math_app/shared/models/api_response.dart';
 import 'package:mental_math_app/shared/models/user.dart';
-import 'package:mental_math_app/shared/services/api_client.dart';
+import 'package:mental_math_app/shared/services/auth_service.dart';
 
 class AuthRepository {
-  final ApiClient _apiClient;
+  final AuthService _authService;
 
-  AuthRepository(this._apiClient);
+  AuthRepository(this._authService);
 
   /// Login user with email and password
   Future<ApiResponse<User>> login(String email, String password) async {
     try {
-      final response = await _apiClient.post<User>(
-        '/auth/login',
-        body: {
-          'email': email,
-          'password': password,
-        },
-        fromJson: (data) {
-          // Save the token if it's included in the response
-          if (data['token'] != null) {
-            _apiClient.saveToken(data['token']);
-          }
-          return User.fromJson(data['user'] ?? data);
-        },
-        requiresAuth: false,
-      );
-      return response;
+      final response =
+          await _authService.login(email: email, password: password);
+      return ApiResponse(
+          success: true, data: User.fromJson(response.data!['user']));
     } catch (e) {
       return ApiResponse<User>(
         success: false,
@@ -43,25 +31,16 @@ class AuthRepository {
     required String lastName,
   }) async {
     try {
-      final response = await _apiClient.post<User>(
-        '/auth/register',
-        body: {
-          'email': email,
-          'username': username,
-          'password': password,
-          'first_name': firstName,
-          'last_name': lastName,
-        },
-        fromJson: (data) {
-          // Save the token if it's included in the response
-          if (data['token'] != null) {
-            _apiClient.saveToken(data['token']);
-          }
-          return User.fromJson(data['user'] ?? data);
-        },
-        requiresAuth: false,
+      final response = await _authService.register(
+        email: email,
+        username: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
       );
-      return response;
+
+      return ApiResponse(
+          success: true, data: User.fromJson(response.data!['user']));
     } catch (e) {
       return ApiResponse<User>(
         success: false,
@@ -70,69 +49,18 @@ class AuthRepository {
     }
   }
 
-  /// Request password reset
-  Future<ApiResponse<void>> requestPasswordReset(String email) async {
-    try {
-      final response = await _apiClient.post<void>(
-        '/auth/forgot-password',
-        body: {
-          'email': email,
-        },
-        fromJson: (_) {},
-        requiresAuth: false,
-      );
-      return response;
-    } catch (e) {
-      return ApiResponse<void>(
-        success: false,
-        message: 'Password reset request failed: ${e.toString()}',
-      );
-    }
-  }
-
-  /// Reset password with token
-  Future<ApiResponse<void>> resetPassword({
-    required String token,
-    required String newPassword,
-  }) async {
-    try {
-      final response = await _apiClient.post<void>(
-        '/auth/reset-password',
-        body: {
-          'token': token,
-          'password': newPassword,
-        },
-        fromJson: (_) {},
-        requiresAuth: false,
-      );
-      return response;
-    } catch (e) {
-      return ApiResponse<void>(
-        success: false,
-        message: 'Password reset failed: ${e.toString()}',
-      );
-    }
-  }
-
   /// Logout the current user
   Future<bool> logout() async {
     try {
-      await _apiClient.post<void>(
-        '/auth/logout',
-        fromJson: (_) {},
-      );
-      await _apiClient.clearToken();
+      await _authService.logout();
       return true;
     } catch (e) {
-      // Even if the API call fails, we clear the token
-      await _apiClient.clearToken();
       return false;
     }
   }
 
   /// Check if the user is currently authenticated
   Future<bool> isAuthenticated() async {
-    final token = await _apiClient.getToken();
-    return token != null && token.isNotEmpty;
+    return await _authService.isAuthenticated();
   }
 }

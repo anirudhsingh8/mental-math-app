@@ -15,12 +15,14 @@ class MentalMathApp extends StatelessWidget {
       listener: (context, state) {
         // Handle authentication state changes
         if (state.status == AuthStatus.unauthenticated) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
+          Navigator.of(AppRoutes.navigatorKey.currentContext!)
+              .pushNamedAndRemoveUntil(
             AppRoutes.login,
             (route) => false,
           );
         } else if (state.status == AuthStatus.authenticated) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
+          Navigator.of(AppRoutes.navigatorKey.currentContext!)
+              .pushNamedAndRemoveUntil(
             AppRoutes.home,
             (route) => false,
           );
@@ -28,6 +30,7 @@ class MentalMathApp extends StatelessWidget {
       },
       child: MaterialApp(
         title: 'Mental Math & Brain Training',
+        navigatorKey: AppRoutes.navigatorKey,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,

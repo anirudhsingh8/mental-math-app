@@ -9,6 +9,7 @@ import 'package:mental_math_app/features/exercises/data/exercise_repository.dart
 import 'package:mental_math_app/features/learning_paths/cubit/learning_path_cubit.dart';
 import 'package:mental_math_app/features/learning_paths/data/learning_path_repository.dart';
 import 'package:mental_math_app/shared/services/api_client.dart';
+import 'package:mental_math_app/shared/services/auth_service.dart';
 import 'package:mental_math_app/shared/services/exercise_service.dart';
 import 'package:mental_math_app/shared/services/learning_path_service.dart';
 import 'package:mental_math_app/shared/services/user_service.dart';
@@ -40,6 +41,7 @@ class ServiceProvider extends StatelessWidget {
 
     // Create services
     final userService = UserService(apiClient);
+    final authService = AuthService(apiClient);
     final exerciseService = ExerciseService(apiClient);
     final learningPathService = LearningPathService(apiClient);
 
@@ -48,6 +50,7 @@ class ServiceProvider extends StatelessWidget {
       RepositoryProvider<ApiClient>(create: (_) => apiClient),
 
       // Register services
+      RepositoryProvider<AuthService>(create: (_) => authService),
       RepositoryProvider<UserService>(create: (_) => userService),
       RepositoryProvider<ExerciseService>(create: (_) => exerciseService),
       RepositoryProvider<LearningPathService>(
@@ -55,7 +58,7 @@ class ServiceProvider extends StatelessWidget {
 
       // Register repositories
       RepositoryProvider<AuthRepository>(
-        create: (_) => AuthRepository(apiClient),
+        create: (_) => AuthRepository(authService),
       ),
       RepositoryProvider<UserRepository>(
         create: (_) => UserRepository(userService),

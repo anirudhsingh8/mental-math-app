@@ -20,7 +20,12 @@ class _LearningPathScreenState extends State<LearningPathScreen> {
   @override
   void initState() {
     super.initState();
-    // Load learning paths when the screen initializes
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Load learning paths when the screen is rebuilt
     _loadLearningPath();
   }
 

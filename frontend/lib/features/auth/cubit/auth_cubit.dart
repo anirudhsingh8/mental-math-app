@@ -83,32 +83,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  /// Request password reset
-  Future<bool> requestPasswordReset(String email) async {
-    try {
-      final response = await _authRepository.requestPasswordReset(email);
-      return response.success;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /// Reset password with token
-  Future<bool> resetPassword({
-    required String token,
-    required String newPassword,
-  }) async {
-    try {
-      final response = await _authRepository.resetPassword(
-        token: token,
-        newPassword: newPassword,
-      );
-      return response.success;
-    } catch (e) {
-      return false;
-    }
-  }
-
   /// Logout the current user
   Future<void> logout() async {
     try {

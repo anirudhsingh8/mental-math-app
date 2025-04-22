@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/register_screen.dart';
 import '../features/auth/screens/splash_screen.dart';
-import '../features/exercises/screens/exercise_list_screen.dart';
 import '../features/exercises/screens/exercise_detail_screen.dart';
+import '../features/exercises/screens/exercise_list_screen.dart';
+import '../features/exercises/screens/home_screen.dart';
 import '../features/learning_paths/screens/learning_path_screen.dart';
 import '../features/progress/screens/progress_screen.dart';
-import '../features/exercises/screens/home_screen.dart';
 
 class AppRoutes {
+  // Navigator key
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
   // Route names
   static const String splash = '/';
   static const String login = '/login';
