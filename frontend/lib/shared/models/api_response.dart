@@ -1,28 +1,42 @@
+/// A generic model for handling API responses in a consistent way
 class ApiResponse<T> {
+  /// Whether the API call was successful
   final bool success;
-  final String message;
+
+  /// Optional data returned from the API
   final T? data;
+
+  /// Optional message from the API
+  final String? message;
+
+  /// Optional error details if the request failed
   final Map<String, dynamic>? errors;
-  final Map<String, dynamic>? meta;
 
   ApiResponse({
     required this.success,
-    required this.message,
     this.data,
+    this.message,
     this.errors,
-    this.meta,
   });
 
+  /// Create an ApiResponse from raw JSON
   factory ApiResponse.fromJson(
-      Map<String, dynamic> json, T Function(dynamic)? fromJsonT) {
-    return ApiResponse(
+    Map<String, dynamic> json,
+    T Function(dynamic) fromJson,
+  ) {
+    // Handle the case where data may not be present
+    T? data;
+    if (json.containsKey('data') && json['data'] != null) {
+      data = fromJson(json['data']);
+    }
+
+    return ApiResponse<T>(
       success: json['success'] ?? false,
-      message: json['message'] ?? '',
-      data: json['data'] != null && fromJsonT != null
-          ? fromJsonT(json['data'])
+      data: data,
+      message: json['message'],
+      errors: json['errors'] != null
+          ? Map<String, dynamic>.from(json['errors'])
           : null,
-      errors: json['errors'],
-      meta: json['meta'],
     );
   }
 }
