@@ -1,0 +1,26 @@
+{
+    "_id": "ObjectId",
+    "email": "string",
+    "password_hash": "string",
+    "username": "string",
+    "first_name": "string",
+    "last_name": "string",
+    "created_at": "timestamp",
+    "updated_at": "timestamp",
+    "last_login": "timestamp",
+    "preferences": {
+      "difficulty_preference": "string",
+      "categories": ["string"],
+      "daily_goal": "int",
+      "notification_settings": {
+        "enabled": "boolean",
+        "time": "string"
+      }
+    },
+    "statistics": {
+      "total_exercises_completed": "int",
+      "streak_days": "int",
+      "average_accuracy": "float",
+      "last_active": "timestamp"
+    }
+  }

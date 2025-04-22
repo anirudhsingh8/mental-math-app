@@ -1,0 +1,20 @@
+{
+    "_id": "ObjectId",
+    "title": "string",
+    "description": "string",
+    "type": "string",
+    "category": "string",
+    "difficulty": "string",
+    "content": {
+      "problem": "string",
+      "options": ["string"],
+      "correct_answer": "string",
+      "explanation": "string"
+    },
+    "metadata": {
+      "generated_by": "string",
+      "template_id": "string",
+      "created_at": "timestamp"
+    },
+    "tags": ["string"]
+  }

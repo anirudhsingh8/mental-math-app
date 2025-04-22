@@ -1,0 +1,9 @@
+{
+    "_id": "ObjectId",
+    "user_id": "ObjectId",
+    "session_token": "string",
+    "created_at": "timestamp",
+    "expires_at": "timestamp",
+    "ip_address": "string",
+    "device_info": "string"
+  }

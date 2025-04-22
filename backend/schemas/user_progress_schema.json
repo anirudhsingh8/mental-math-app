@@ -1,0 +1,13 @@
+{
+    "_id": "ObjectId",
+    "user_id": "ObjectId",
+    "exercise_id": "ObjectId",
+    "attempts": [{
+      "timestamp": "timestamp",
+      "user_answer": "string",
+      "is_correct": "boolean",
+      "time_taken": "int"
+    }],
+    "mastery_level": "float",
+    "last_attempted": "timestamp"
+  }
