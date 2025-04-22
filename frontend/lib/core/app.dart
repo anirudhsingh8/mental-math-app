@@ -1,20 +1,40 @@
 import 'package:flutter/material.dart';
-import '../config/theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../config/routes.dart';
+import '../config/theme.dart';
+import '../features/auth/cubit/auth_cubit.dart';
+import '../features/auth/cubit/auth_state.dart';
 
 class MentalMathApp extends StatelessWidget {
   const MentalMathApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mental Math & Brain Training',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      initialRoute: AppRoutes.splash,
-      routes: AppRoutes.routes,
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        // Handle authentication state changes
+        if (state.status == AuthStatus.unauthenticated) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.login,
+            (route) => false,
+          );
+        } else if (state.status == AuthStatus.authenticated) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.home,
+            (route) => false,
+          );
+        }
+      },
+      child: MaterialApp(
+        title: 'Mental Math & Brain Training',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        initialRoute: AppRoutes.splash,
+        routes: AppRoutes.routes,
+      ),
     );
   }
 }
