@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+
 import '../../../config/theme.dart';
-import '../../../config/routes.dart';
 import '../../learning_paths/screens/learning_path_screen.dart';
 import '../../progress/screens/progress_screen.dart';
 import 'exercise_list_screen.dart';
